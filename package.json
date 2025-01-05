@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "node --inspect --max-old-space-size=400 -r ts-node/register/transpile-only src/server.ts",
+    "dev": "nodemon",
+    "build": "npx esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
+    "start": "node dist/server.js",
+    "pm2dev": "pm2 start src/server.ts --name fastify-dev --watch --interpreter ts-node",
+    "pm2build": "npx esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
+    "pm2start": "pm2 start dist/server.js --name fastify-app",
+    "pm2stop": "pm2 stop fastify-app fastify-dev",
+    "pm2restart": "pm2 restart fastify-app fastify-dev",
+    "pm2delete": "pm2 delete fastify-app fastify-dev",
+    "pm2logs": "pm2 logs",
+    "pm2monit": "pm2 monit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "esbuild": "^0.24.2",
+    "fastify-tsconfig": "^2.0.0",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "fastify": "^5.2.0"
+  }
+}
