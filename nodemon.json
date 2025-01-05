@@ -2,7 +2,7 @@
   "watch": ["src"],
   "ext": "ts",
   "ignore": ["dist/*", "node_modules/*"],
-  "exec": "node --max-old-space-size=400 -r ts-node/register/transpile-only src/server.ts",
+  "exec": "node --max-old-space-size=400 -r tsconfig-paths/register -r ts-node/register/transpile-only src/server.ts",
   "events": {
     "restart": "echo 'Server restarted due to file changes...'"
   }

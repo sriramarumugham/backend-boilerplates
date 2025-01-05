@@ -11,11 +11,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "node --inspect --max-old-space-size=400 -r ts-node/register/transpile-only src/server.ts",
     "dev": "nodemon",
-    "build": "npx esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
-    "start": "node dist/server.js",
+    "build:tsc": "tsc && tsc-alias",
+    "build": "npx esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js --alias:@=./src",
+    "start": "node -r tsconfig-paths/register dist/server.js",
     "pm2dev": "pm2 start src/server.ts --name fastify-dev --watch --interpreter ts-node",
     "pm2build": "npx esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
-    "pm2start": "pm2 start dist/server.js --name fastify-app",
+    "pm2start": "pm2   start dist/server.js --name fastify-app",
     "pm2stop": "pm2 stop fastify-app fastify-dev",
     "pm2restart": "pm2 restart fastify-app fastify-dev",
     "pm2delete": "pm2 delete fastify-app fastify-dev",
@@ -26,14 +27,27 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@fastify/swagger": "^9.4.0",
+    "@fastify/swagger-ui": "^5.2.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.5",
     "esbuild": "^0.24.2",
     "fastify-tsconfig": "^2.0.0",
     "nodemon": "^3.1.9",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
+    "@fastify/autoload": "^6.0.3",
+    "@fastify/cors": "^10.0.2",
+    "@fastify/type-provider-typebox": "^5.1.0",
+    "@sinclair/typebox": "^0.34.13",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
-    "fastify": "^5.2.0"
+    "fastify": "^5.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.3"
   }
 }
