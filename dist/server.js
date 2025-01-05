@@ -33552,7 +33552,7 @@ server.get("/", async (request, reply) => {
   return { message: "Hello, from fastify!" };
 });
 var port = parseInt(process.env.PORT || "4000", 10);
-console.log("port__", port);
+console.log("PORT:", port);
 var start = async () => {
   try {
     await server.listen({ port, host: "0.0.0.0" });

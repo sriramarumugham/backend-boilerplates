@@ -11,7 +11,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "node --inspect --max-old-space-size=400 -r ts-node/register/transpile-only src/server.ts",
     "dev": "nodemon",
+    "prepare": "if [ \"$NODE_ENV\" != \"production\" ]; then esbuild --version; fi",
     "build": "npx esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
+    "build:tsc": "tsc",
     "start": "node dist/server.js",
     "pm2dev": "pm2 start src/server.ts --name fastify-dev --watch --interpreter ts-node",
     "pm2build": "npx esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js",
@@ -27,13 +29,14 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.10.5",
-    "esbuild": "^0.24.2",
+
     "fastify-tsconfig": "^2.0.0",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2"
   },
   "dependencies": {
     "dotenv": "^16.4.7",
-    "fastify": "^5.2.0"
+    "fastify": "^5.2.0",
+    "esbuild": "^0.24.2"
   }
 }
