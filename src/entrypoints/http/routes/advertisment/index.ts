@@ -25,16 +25,18 @@ import { createErrorResponse, createSuccessResponse } from '@/utils/response';
 import { Static, TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync, FastifyReply, FastifyRequest } from 'fastify';
 
-import fs from 'fs';
+import * as fs from 'fs';
+import { unlink } from 'fs/promises';
+
 import { pipeline } from 'node:stream/promises';
-const dummyImage="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+// const dummyImage = "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 const AdvertismentRoutes: FastifyPluginAsync = async (fastify) => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post(
       '', {
-        schema:createAdvertismentRequestSchema
-      },
+      schema: createAdvertismentRequestSchema
+    },
       async (
         req: FastifyRequest<{
           Body: any;
@@ -42,37 +44,44 @@ const AdvertismentRoutes: FastifyPluginAsync = async (fastify) => {
         res: FastifyReply,
       ) => {
         try {
-          const data = await req.file(); 
+   
+          const parts = req.files();
+          const uploadedImageUrls: string[] = [];
+          let fields={};
 
-          console.log("DATA_____",data)
-          const fields = data?.fields;
-          const file = data?.file;
-          const fileName = data?.fieldname;
-          const encoding = data?.encoding
-          const mimetype = data?.mimetype;
-          // console.log("FLIE____", file); 
+          for await (const part of parts) {
+            fields = part.fields;
 
-          await pipeline(data?.file!, fs.createWriteStream(data?.filename!));
-          const buffer = await data?.toBuffer();
-          // console.log("BUFFER__", buffer)
+            if (part.type === 'file') {
+              try {
+                const localFilePath = `${part.filename}`;  
 
-          // await data?.toBuffer()
-          validateAdvertismentForm(fields as unknown as any , res);
-          const user = getUserIdFromRequestHeader(req);
-          const payload = createAdvertismentData(fields as unknown as any); 
-          // console.log('PAYLOAD__', payload)
-          const images = await fileUpload(data?.filename!);
-          // console.log("IMAGES UPLOADED:", images);
+                console.log(`Processing file ${part.filename}...`);
+                await pipeline(part.file, fs.createWriteStream(localFilePath));
 
-  //         fs.unlink(data?.filename!, (err) => {
-  // if (err) {
-  //   console.error("Error deleting local file:", err);
-  // } else {
-  //   console.log("Local file deleted:", data?.filename);
-  // }
-  //         });
-          
-          // await createAdvertismentUseCase({...payload, images:[dummyImage ]}, user.userId);
+                const imageUrls = await fileUpload(localFilePath);
+                uploadedImageUrls.push(...imageUrls);  
+                await unlink(localFilePath);
+                console.log(`File ${part.filename} uploaded and local file deleted.`);
+              } catch (error) {
+                console.error(`Error processing file ${part.filename}:`, error);
+              }
+            } else {
+              console.log('Form field:', part);
+            }
+          }
+
+          try {
+            const user = getUserIdFromRequestHeader(req);
+            const payload:any = createAdvertismentData(fields as unknown as any);  
+            payload.images = uploadedImageUrls; 
+            await createAdvertismentUseCase(payload, user.userId); 
+           return createSuccessResponse(res, 'Advertisement created!');
+          } catch (error:any) {
+            const message = error?.message || 'An unexpected error occurred';
+            const statusCode = error?.status || 500;
+           return createErrorResponse(res, message, statusCode);
+          }
           createSuccessResponse(res, 'Advertisment created!');
         } catch (error: any) {
           const message = error.message || 'An unexpected error occurred';
@@ -123,7 +132,7 @@ const AdvertismentRoutes: FastifyPluginAsync = async (fastify) => {
           createErrorResponse(res, message, statusCode);
         }
       },
-    )  
+    )
     .get(
       '/my-advertisements',
       { schema: getPublishedAdvertisementsSchema },

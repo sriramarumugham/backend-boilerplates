@@ -25,12 +25,13 @@ export const createAdvertismentUseCase = async (
   //   throw new Error('User profile is incomplete. Please update your profile.');
   // }
 
-  await AdvertismentModel.create({
+  const response=await AdvertismentModel.create({
     ...body,
     status: E_STATUS.ACTIVE,
     createdAt: new Date(),
     createdBy: userId,
   });
+  return response;
 };
 
 export const deleteAdvertismentUseCase = async (

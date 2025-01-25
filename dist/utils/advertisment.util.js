@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createAdvertismentData = exports.validateAdvertismentForm = void 0;
 const types_1 = require("../types");
-const validateAdvertismentForm = async (req, res) => {
-    const { body } = req;
+const validateAdvertismentForm = async (fields, res) => {
+    const body = fields;
     // Validate productName
     const productName = body?.productName?.value;
     if (!productName || typeof productName !== 'string') {

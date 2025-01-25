@@ -17,12 +17,13 @@ const createAdvertismentUseCase = async (body, userId) => {
     // if (!isValidProfile.Check(user)) {
     //   throw new Error('User profile is incomplete. Please update your profile.');
     // }
-    await advertisment_schema_1.default.create({
+    const response = await advertisment_schema_1.default.create({
         ...body,
         status: types_1.E_STATUS.ACTIVE,
         createdAt: new Date(),
         createdBy: userId,
     });
+    return response;
 };
 exports.createAdvertismentUseCase = createAdvertismentUseCase;
 const deleteAdvertismentUseCase = async (advertismentId, userId) => {
