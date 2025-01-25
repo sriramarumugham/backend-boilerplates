@@ -1,8 +1,8 @@
 import { AdvertismentTypeRequestType, E_INVENTORY_STATUS, E_STATUS } from "@/types";
 import { FastifyReply, FastifyRequest } from "fastify";
 
-export const validateAdvertismentForm = async (req: FastifyRequest<{Body:AdvertismentTypeRequestType}>, res: FastifyReply) => {
-  const { body } = req;
+export const validateAdvertismentForm = async (fields:AdvertismentTypeRequestType, res: FastifyReply) => {
+  const  body = fields;
 
   // Validate productName
   const productName = body?.productName?.value;

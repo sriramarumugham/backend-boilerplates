@@ -1,68 +1,53 @@
 import { Client } from 'basic-ftp';
+import path from 'path';
+import * as fs from 'fs';
 
 // FTP Credentials
 const FTP_CREDENTIALS = {
-  host: process.env.HOST,          // FTP server IP or hostname
-  user: process.env.USER,       // FTP username
-  password: process.env.PASSWORD,        // FTP password
-  port: process.env.PORT,                        // FTP port (21 for standard FTP)
-  directory: process.env.DIRECTORY  as unknown as string// FTP directory path to upload images
+  host: process.env.FTP_HOST,          // FTP server IP or hostname
+  user: process.env.FTP_USER,          // FTP username
+  password: process.env.FTP_PASSWORD,  // FTP password
+  port: process.env.FTP_PORT || 21,    // FTP port (default to 21 for standard FTP)
+  directory: process.env.FTP_DIRECTORY as string, // FTP directory path to upload images
 };
 
-export const fileUpload = async (body: any) => {
-  let imagesArray = body.images;
 
-  // Ensure imagesArray is an array, even if a single image is passed
-  if (!Array.isArray(imagesArray)) {
-    imagesArray = [imagesArray];
-  }
+export const fileUpload = async (filePath: string) => {
+  // console.log("LOCAL FILE PATH____", filePath);
 
-  console.log("IMAGES TO UPLOAD:", imagesArray);
-
-  if (!imagesArray || imagesArray.length === 0) {
-    console.error("No images found");
-    return [];
-  }
-
-  const client = new Client(); // FTP client instance
-  const uploadedImageUrls: string[] = []; // Array to store uploaded image URLs
+  const client = new Client(); 
+  const uploadedImageUrls: string[] = []; 
 
   try {
-    // Connect to the FTP server using the credentials provided
+    // Connect to the FTP server
     await client.access({
       host: FTP_CREDENTIALS.host,
       user: FTP_CREDENTIALS.user,
       password: FTP_CREDENTIALS.password,
       port: 21,
     });
+    console.log("FTP CONNECTION SUCCESSFUL");
 
-    // Change to the directory where images should be uploaded
-    await client.cd(FTP_CREDENTIALS.directory as unknown as any);
+    const filename = path.basename(filePath);  // Get filename from file path
 
-    // Loop through each image and upload
-    for (const image of imagesArray) {
-      const { file, filename } = image;
+    console.log(`STARTING TO UPLOAD: ${filename}`);
 
-      // Check if the image has both file and filename properties
-      if (!file || !filename) {
-        console.error("Invalid image object, missing file or filename");
-        continue; // Skip to the next image
-      }
-
-      console.log(`STARTING TO Uploaded file: ${filename}`);
-        
-      // Upload the file to the FTP server
-      await client.uploadFrom(file, filename);
-      console.log(`ENDED Uploaded file: ${filename}`);
-
-      // Construct the URL of the uploaded image
-      const imageUrl = `ftp://${FTP_CREDENTIALS.host}${FTP_CREDENTIALS.directory.replace(/^\//, '')}/${filename}`;
-      uploadedImageUrls.push(imageUrl); // Add the URL to the array
+    // Check if file exists locally
+    if (fs.existsSync(filePath)) {
+     const response= await client.uploadFrom(filePath, filename);  // Upload the file to FTP
+      console.log(`UPLOADED: ${filename}` ,response);
+      
+      const imageUrl = `ftp://${FTP_CREDENTIALS.host}/${filename}`;
+      uploadedImageUrls.push(imageUrl);
+    } else {
+      console.error("File not found on the server:", filePath);
     }
+    
   } catch (error) {
-    console.error("Error during FTP upload:", error); // Log errors if any
+    console.error("ERROR DURING FTP UPLOAD:", error);
   } finally {
     // Close the FTP connection
+    console.log("CLOSING FTP CONNECTION");
     client.close();
   }
 
