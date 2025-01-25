@@ -4,15 +4,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const advertisment_request_schema_1 = require("../../../../domain/advertisment/advertisment.request-schema");
 const advertisment_usecase_1 = require("../../../../domain/advertisment/advertisment.usecase");
+const advertisment_util_1 = require("../../../../utils/advertisment.util");
 const auth_util_1 = require("../../../../utils/auth.util");
 const response_1 = require("../../../../utils/response");
+const dummyImage = "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 const AdvertismentRoutes = async (fastify) => {
     fastify
         .withTypeProvider()
-        .post('/advertisment', { schema: advertisment_request_schema_1.createAdvertismentRequestSchema }, async (req, res) => {
+        .post('', {
+        schema: advertisment_request_schema_1.createAdvertismentRequestSchema
+    }, async (req, res) => {
         try {
+            (0, advertisment_util_1.validateAdvertismentForm)(req, res);
             const user = (0, auth_util_1.getUserIdFromRequestHeader)(req);
-            await (0, advertisment_usecase_1.createAdvertismentUseCase)(req.body, user.userId);
+            const payload = (0, advertisment_util_1.createAdvertismentData)(req?.body);
+            // const images = await fileUpload(req.body);
+            // console.log("IMAGES UPLOADED:", images);
+            await (0, advertisment_usecase_1.createAdvertismentUseCase)({ ...payload, images: [dummyImage] }, user.userId);
             (0, response_1.createSuccessResponse)(res, 'Advertisment created!');
         }
         catch (error) {
@@ -21,7 +29,7 @@ const AdvertismentRoutes = async (fastify) => {
             (0, response_1.createErrorResponse)(res, message, statusCode);
         }
     })
-        .patch('/advertisment/:id/inventoryDetails', { schema: advertisment_request_schema_1.updateAdvertismentInverntorySchema }, async (req, res) => {
+        .patch('/inventoryDetails/:id', { schema: advertisment_request_schema_1.updateAdvertismentInverntorySchema }, async (req, res) => {
         try {
             const user = (0, auth_util_1.getUserIdFromRequestHeader)(req);
             await (0, advertisment_usecase_1.updateAdvertismentStatusUseCase)(req.params.id, req.body, user.userId);
@@ -33,7 +41,7 @@ const AdvertismentRoutes = async (fastify) => {
             (0, response_1.createErrorResponse)(res, message, statusCode);
         }
     })
-        .delete('/advertisment/:id', { schema: advertisment_request_schema_1.deleteAdvertismentSchema }, async (req, res) => {
+        .delete('/:id', { schema: advertisment_request_schema_1.deleteAdvertismentSchema }, async (req, res) => {
         try {
             const user = (0, auth_util_1.getUserIdFromRequestHeader)(req);
             await (0, advertisment_usecase_1.deleteAdvertismentUseCase)(req.params.id, user.userId);
@@ -45,7 +53,7 @@ const AdvertismentRoutes = async (fastify) => {
             (0, response_1.createErrorResponse)(res, message, statusCode);
         }
     })
-        .get('/published', { schema: advertisment_request_schema_1.getPublishedAdvertisementsSchema }, async (req, res) => {
+        .get('/my-advertisements', { schema: advertisment_request_schema_1.getPublishedAdvertisementsSchema }, async (req, res) => {
         try {
             const user = (0, auth_util_1.getUserIdFromRequestHeader)(req);
             const advertisments = await (0, advertisment_usecase_1.getUserAdvertismentsUsecase)(user.userId);

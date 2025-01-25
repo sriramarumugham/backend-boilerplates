@@ -1,0 +1,358 @@
+{
+  "categories": [
+    {
+      "categoryId": "cat_1",
+      "name": "Electronics",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_2",
+      "name": "Vehicles",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_3",
+      "name": "Home Appliances",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_4",
+      "name": "Fashion",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_5",
+      "name": "Sports",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_6",
+      "name": "Books",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_7",
+      "name": "Beauty Products",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_8",
+      "name": "Toys",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_9",
+      "name": "Furniture",
+      "icon": "https://example.com/icons/default.png"
+    },
+    {
+      "categoryId": "cat_10",
+      "name": "Groceries",
+      "icon": "https://example.com/icons/default.png"
+    }
+  ],
+  "subcategories": [
+    {
+      "subcategoryId": "sub_1_1",
+      "name": "Mobile Phones",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_2",
+      "name": "Laptops",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_3",
+      "name": "Tablets",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_4",
+      "name": "Televisions",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_5",
+      "name": "Headphones",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_6",
+      "name": "Smart Watches",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_7",
+      "name": "Cameras",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_8",
+      "name": "Printers",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_9",
+      "name": "Gaming Consoles",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_1_10",
+      "name": "Speakers",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_1"
+    },
+    {
+      "subcategoryId": "sub_2_1",
+      "name": "Cars",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_2",
+      "name": "Bikes",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_3",
+      "name": "Trucks",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_4",
+      "name": "Scooters",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_5",
+      "name": "Electric Vehicles",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_6",
+      "name": "Accessories",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_7",
+      "name": "Motorcycles",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_8",
+      "name": "Car Rentals",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_9",
+      "name": "Helmets",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_2_10",
+      "name": "Tires",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_2"
+    },
+    {
+      "subcategoryId": "sub_3_1",
+      "name": "Refrigerators",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    },
+    {
+      "subcategoryId": "sub_3_2",
+      "name": "Microwaves",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    },
+    {
+      "subcategoryId": "sub_3_3",
+      "name": "Air Conditioners",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    },
+    {
+      "subcategoryId": "sub_3_4",
+      "name": "Vacuum Cleaners",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    },
+    {
+      "subcategoryId": "sub_3_5",
+      "name": "Water Heaters",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    },
+    {
+      "subcategoryId": "sub_3_6",
+      "name": "Washing Machines",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    },
+    {
+      "subcategoryId": "sub_3_7",
+      "name": "Blenders",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    },
+    {
+      "subcategoryId": "sub_3_8",
+      "name": "Ovens",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    },
+    {
+      "subcategoryId": "sub_3_9",
+      "name": "Dishwashers",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_3"
+    } ,{
+      "subcategoryId": "sub_4_1",
+      "name": "Men's Clothing",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_4"
+    },
+    {
+      "subcategoryId": "sub_4_2",
+      "name": "Women's Clothing",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_4"
+    },
+    {
+      "subcategoryId": "sub_4_3",
+      "name": "Accessories",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_4"
+    },
+    {
+      "subcategoryId": "sub_5_1",
+      "name": "Indoor Sports",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_5"
+    },
+    {
+      "subcategoryId": "sub_5_2",
+      "name": "Outdoor Sports",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_5"
+    },
+    {
+      "subcategoryId": "sub_5_3",
+      "name": "Fitness Equipment",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_5"
+    },
+    {
+      "subcategoryId": "sub_6_1",
+      "name": "Fiction",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_6"
+    },
+    {
+      "subcategoryId": "sub_6_2",
+      "name": "Non-Fiction",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_6"
+    },
+    {
+      "subcategoryId": "sub_6_3",
+      "name": "Educational",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_6"
+    },
+    {
+      "subcategoryId": "sub_7_1",
+      "name": "Skincare",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_7"
+    },
+    {
+      "subcategoryId": "sub_7_2",
+      "name": "Haircare",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_7"
+    },
+    {
+      "subcategoryId": "sub_7_3",
+      "name": "Makeup",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_7"
+    },
+    {
+      "subcategoryId": "sub_8_1",
+      "name": "Action Figures",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_8"
+    },
+    {
+      "subcategoryId": "sub_8_2",
+      "name": "Educational Toys",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_8"
+    },
+    {
+      "subcategoryId": "sub_8_3",
+      "name": "Board Games",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_8"
+    },
+    {
+      "subcategoryId": "sub_9_1",
+      "name": "Living Room Furniture",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_9"
+    },
+    {
+      "subcategoryId": "sub_9_2",
+      "name": "Bedroom Furniture",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_9"
+    },
+    {
+      "subcategoryId": "sub_9_3",
+      "name": "Office Furniture",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_9"
+    },
+    {
+      "subcategoryId": "sub_10_1",
+      "name": "Vegetables",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_10"
+    },
+    {
+      "subcategoryId": "sub_10_2",
+      "name": "Fruits",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_10"
+    },
+    {
+      "subcategoryId": "sub_10_3",
+      "name": "Dairy Products",
+      "icon": "https://example.com/icons/default.png",
+      "categoryId": "cat_10"
+    }
+  ]
+}
+
+
+

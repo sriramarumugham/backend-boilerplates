@@ -17,26 +17,37 @@ import {
   getUserAdvertismentsUsecase,
   updateAdvertismentStatusUseCase,
 } from '@/domain/advertisment/advertisment.usecase';
+import { AdvertismentTypeRequestType } from '@/types';
+import { createAdvertismentData, validateAdvertismentForm } from '@/utils/advertisment.util';
 import { getUserIdFromRequestHeader } from '@/utils/auth.util';
+import { fileUpload } from '@/utils/file-upload.util';
 import { createErrorResponse, createSuccessResponse } from '@/utils/response';
 import { Static, TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync, FastifyReply, FastifyRequest } from 'fastify';
 
+const dummyImage="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=2971&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 const AdvertismentRoutes: FastifyPluginAsync = async (fastify) => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post(
-      '/advertisment',
-      { schema: createAdvertismentRequestSchema },
+      '', {
+        schema:createAdvertismentRequestSchema
+      },
       async (
         req: FastifyRequest<{
-          Body: Static<typeof createAdvertismentRequestSchema.body>;
+          Body: any;
         }>,
         res: FastifyReply,
       ) => {
         try {
+
+          validateAdvertismentForm(req, res);
           const user = getUserIdFromRequestHeader(req);
-          await createAdvertismentUseCase(req.body, user.userId);
+          const payload = createAdvertismentData(req?.body as unknown as any)
+          // const images = await fileUpload(req.body);
+          // console.log("IMAGES UPLOADED:", images);
+
+          await createAdvertismentUseCase({...payload, images:[dummyImage ]}, user.userId);
           createSuccessResponse(res, 'Advertisment created!');
         } catch (error: any) {
           const message = error.message || 'An unexpected error occurred';
@@ -46,7 +57,7 @@ const AdvertismentRoutes: FastifyPluginAsync = async (fastify) => {
       },
     )
     .patch(
-      '/advertisment/:id/inventoryDetails',
+      '/inventoryDetails/:id',
       { schema: updateAdvertismentInverntorySchema },
       async (
         req: FastifyRequest<{
@@ -71,7 +82,7 @@ const AdvertismentRoutes: FastifyPluginAsync = async (fastify) => {
       },
     )
     .delete(
-      '/advertisment/:id',
+      '/:id',
       { schema: deleteAdvertismentSchema },
       async (
         req: FastifyRequest<{ Params: { id: string } }>,
@@ -87,9 +98,9 @@ const AdvertismentRoutes: FastifyPluginAsync = async (fastify) => {
           createErrorResponse(res, message, statusCode);
         }
       },
-    )
+    )  
     .get(
-      '/published',
+      '/my-advertisements',
       { schema: getPublishedAdvertisementsSchema },
       async (req: FastifyRequest, res: FastifyReply) => {
         try {

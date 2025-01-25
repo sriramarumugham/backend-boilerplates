@@ -16,7 +16,7 @@ export const AdvertismentType = Type.Object({
   advertismentId: Type.String(),
   productName: Type.String(),
   productDescription: Type.String(),
-  views: Type.Number(),
+  views:  Type.Optional(Type.Number()),
   categoryName: Type.String(),
   categoryId: Type.String(),
   subcategoryName: Type.String(),
@@ -49,8 +49,42 @@ export const UpdateInventoryDocument = Type.Pick(AdvertismentType, [
 
 export type UpdateInventoryType = Static<typeof UpdateInventoryDocument>;
 
-export const searchRequestDocument = Type.Intersect([
-  Type.Pick(AdvertismentType, ['productName', 'categoryName']),
-  Type.Object({ searchText: Type.String() }),
-]);
+export const searchRequestDocument = Type.Object({
+  productName: Type.Optional(Type.String()),
+  categoryName: Type.Optional(Type.String()),
+  searchText:Type.Optional(Type.String())
+})
+
 export type searchRequestType = Static<typeof searchRequestDocument>;
+
+
+
+// form data schema
+export const AdvertismentTypeRequestType = Type.Object({
+  advertismentId: Type.String(),
+  productName: Type.Object({ value: Type.String() }),
+  productDescription: Type.Object({ value: Type.String() }),
+  views: Type.Object({ value: Type.Number() }),
+  categoryName: Type.Object({ value: Type.String() }),
+  categoryId: Type.Object({ value: Type.String() }),
+  subcategoryName: Type.Object({ value: Type.String() }),
+  subcategoryId: Type.Object({ value: Type.String() }),
+  images: Type.Object({ value: Type.Array(
+    Type.Object({
+      fieldname: Type.String(),
+      filename: Type.String(),
+      encoding: Type.String(),
+      mimetype: Type.String(),
+      file: Type.Any(),
+    })
+  ) }),
+  city: Type.Object({ value: Type.String() }),
+  zip: Type.Object({ value: Type.String() }),
+  address: Type.Object({ value: Type.String() }),
+  createdBy: Type.String(),
+  status: Type.Object({ value: Type.Enum(E_STATUS) }),
+  inventoryDetails: Type.Object({ value: Type.Enum(E_INVENTORY_STATUS) }),
+  productDetails: Type.Object({ value: Type.Any() }),
+});
+
+export type AdvertismentTypeRequestType = Static<typeof AdvertismentTypeRequestType>;

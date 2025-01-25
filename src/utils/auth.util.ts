@@ -11,7 +11,6 @@ export const signToken = (userId: string): string => {
 export const verifyToken = (token: string) => {
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY!);
-    console.log('DECODED__', decoded);
     return decoded;
   } catch (error) {
     throw new Error('Invalid token');
@@ -26,10 +25,7 @@ export const getUserIdFromRequestHeader = (
   if (!authHeader) {
     throw new Error('Authorization header missing');
   }
-
-  const token = authHeader.split(' ')[0]; // Get the token part
-  console.log('TOKNE__', token);
+  const token = authHeader?.split(' ')[1] ?? authHeader?.split(' ')[0]; 
   const decodedToken = verifyToken(token);
-  console.log('DECODED_TOKNE__', decodedToken);
   return decodedToken as { userId: string };
 };

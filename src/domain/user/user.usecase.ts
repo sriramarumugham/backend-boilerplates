@@ -40,6 +40,7 @@ export const loginUserUseCase = async (body: loginRequestType) => {
   if (!user) {
     throw new Error('Invalid email or password');
   }
+
   const isValidPassword = await comparePassword(password, user.password);
   if (!isValidPassword) {
     throw new Error('Invalid email or password');

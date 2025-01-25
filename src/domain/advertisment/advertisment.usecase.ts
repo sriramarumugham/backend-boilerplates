@@ -6,9 +6,10 @@ import {
   CreateAdvertismentRequestType,
   E_INVENTORY_STATUS,
   E_STATUS,
-  isValidProfile,
   UpdateInventoryType,
 } from '@/types';
+import { fileUpload } from '@/utils/file-upload.util';
+
 
 export const createAdvertismentUseCase = async (
   body: CreateAdvertismentRequestType,
@@ -19,13 +20,14 @@ export const createAdvertismentUseCase = async (
     throw new Error('User not found');
   }
 
-  if (!isValidProfile.Check(user)) {
-    throw new Error('User profile is incomplete. Please update your profile.');
-  }
+  // TODO profile to upload user information
+  // if (!isValidProfile.Check(user)) {
+  //   throw new Error('User profile is incomplete. Please update your profile.');
+  // }
 
   await AdvertismentModel.create({
     ...body,
-    status: 'AVAILABLE',
+    status: E_STATUS.ACTIVE,
     createdAt: new Date(),
     createdBy: userId,
   });
@@ -37,7 +39,7 @@ export const deleteAdvertismentUseCase = async (
 ) => {
   const advertisment = await AdvertismentModel.findOne({
     advertismentId: advertismentId,
-    userId,
+    createdBy:userId,
   });
 
   if (!advertisment) {
@@ -54,7 +56,7 @@ export const updateAdvertismentStatusUseCase = async (
 ) => {
   const advertisment = await AdvertismentModel.findOne({
     advertismentId: advertismentId,
-    userId,
+    createdBy:userId,
   });
 
   if (!advertisment) {
@@ -76,8 +78,8 @@ export const getUserAdvertismentsUsecase = async (
   userId: string,
 ): Promise<AdvertismentDocument[]> => {
   const adverts = await AdvertismentModel.find<AdvertismentDocument>({
-    userId,
     status: E_STATUS.ACTIVE,
+    createdBy:userId
   }).exec();
 
   return adverts.sort((a, b) => {
@@ -86,6 +88,7 @@ export const getUserAdvertismentsUsecase = async (
     );
   });
 };
+
 
 export const blockAdvertismentUseCase = async (
   adminId: string,
@@ -124,31 +127,35 @@ export const searchProductsUseCase = async ({
 }: {
   productName?: string;
   categoryName?: string;
-  searchText: string; // Make sure this is included
+  searchText?: string; 
 }): Promise<any> => {
   const query: any = {
-    status: 'active',
-    inventoryStatus: 'available',
+    status: E_STATUS.ACTIVE,
+    inventoryDetails: E_INVENTORY_STATUS.AVAILABLE,
   };
-
-  // Construct the query based on the provided search parameters
+  
   if (productName) {
     query.productName = { $regex: productName, $options: 'i' }; // Case-insensitive search
   }
+
   if (categoryName) {
     query.categoryName = { $regex: categoryName, $options: 'i' };
   }
-  if (searchText) {
-    query.$text = { $search: searchText }; // Assuming you're using text indexing in MongoDB
-  }
 
-  // Fetch products from the database based on the constructed query
+  if (searchText) {
+    const regex = new RegExp(searchText, 'i'); 
+    query.$or = [
+      { productName: { $regex: regex } },
+      { categoryName: { $regex: regex } },
+      { productDescription: { $regex: regex } },
+    ];
+  }
   return await AdvertismentModel.find(query);
 };
 
 export const getAdvertismentByIdUsecase = async (id: string) => {
   return await AdvertismentModel.findOne({
     advertismentId: id,
-    status: E_STATUS.ACTIVE, // Ensure the advertisement is active
+    status: E_STATUS.ACTIVE, 
   });
 };

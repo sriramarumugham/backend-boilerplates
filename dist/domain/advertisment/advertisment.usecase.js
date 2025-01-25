@@ -13,12 +13,13 @@ const createAdvertismentUseCase = async (body, userId) => {
     if (!user) {
         throw new Error('User not found');
     }
-    if (!types_1.isValidProfile.Check(user)) {
-        throw new Error('User profile is incomplete. Please update your profile.');
-    }
+    // TODO profile to upload user information
+    // if (!isValidProfile.Check(user)) {
+    //   throw new Error('User profile is incomplete. Please update your profile.');
+    // }
     await advertisment_schema_1.default.create({
         ...body,
-        status: 'AVAILABLE',
+        status: types_1.E_STATUS.ACTIVE,
         createdAt: new Date(),
         createdBy: userId,
     });
@@ -27,7 +28,7 @@ exports.createAdvertismentUseCase = createAdvertismentUseCase;
 const deleteAdvertismentUseCase = async (advertismentId, userId) => {
     const advertisment = await advertisment_schema_1.default.findOne({
         advertismentId: advertismentId,
-        userId,
+        createdBy: userId,
     });
     if (!advertisment) {
         throw new Error('Advertisement not found or access denied.');
@@ -38,7 +39,7 @@ exports.deleteAdvertismentUseCase = deleteAdvertismentUseCase;
 const updateAdvertismentStatusUseCase = async (advertismentId, body, userId) => {
     const advertisment = await advertisment_schema_1.default.findOne({
         advertismentId: advertismentId,
-        userId,
+        createdBy: userId,
     });
     if (!advertisment) {
         throw new Error('Advertisement not found or access denied.');
@@ -55,8 +56,8 @@ const INVENTORY_ORDER = {
 };
 const getUserAdvertismentsUsecase = async (userId) => {
     const adverts = await advertisment_schema_1.default.find({
-        userId,
         status: types_1.E_STATUS.ACTIVE,
+        createdBy: userId
     }).exec();
     return adverts.sort((a, b) => {
         return (INVENTORY_ORDER[a.inventoryDetails] - INVENTORY_ORDER[b.inventoryDetails]);
@@ -85,10 +86,9 @@ const getAdvertismentByStatus = async (adminId, status) => {
 exports.getAdvertismentByStatus = getAdvertismentByStatus;
 const searchProductsUseCase = async ({ productName, categoryName, searchText, }) => {
     const query = {
-        status: 'active',
-        inventoryStatus: 'available',
+        status: types_1.E_STATUS.ACTIVE,
+        inventoryDetails: types_1.E_INVENTORY_STATUS.AVAILABLE,
     };
-    // Construct the query based on the provided search parameters
     if (productName) {
         query.productName = { $regex: productName, $options: 'i' }; // Case-insensitive search
     }
@@ -96,16 +96,20 @@ const searchProductsUseCase = async ({ productName, categoryName, searchText, })
         query.categoryName = { $regex: categoryName, $options: 'i' };
     }
     if (searchText) {
-        query.$text = { $search: searchText }; // Assuming you're using text indexing in MongoDB
+        const regex = new RegExp(searchText, 'i');
+        query.$or = [
+            { productName: { $regex: regex } },
+            { categoryName: { $regex: regex } },
+            { productDescription: { $regex: regex } },
+        ];
     }
-    // Fetch products from the database based on the constructed query
     return await advertisment_schema_1.default.find(query);
 };
 exports.searchProductsUseCase = searchProductsUseCase;
 const getAdvertismentByIdUsecase = async (id) => {
     return await advertisment_schema_1.default.findOne({
         advertismentId: id,
-        status: types_1.E_STATUS.ACTIVE, // Ensure the advertisement is active
+        status: types_1.E_STATUS.ACTIVE,
     });
 };
 exports.getAdvertismentByIdUsecase = getAdvertismentByIdUsecase;

@@ -11,7 +11,7 @@ import { request } from 'http';
 
 export const createCategories = {
   tags: ['master'],
-  body: CategoryType,
+  body: Type.Array(CategoryType),
   response: {
     ...ErrorResponses,
     200: SuccessResponseType(),
@@ -20,7 +20,7 @@ export const createCategories = {
 
 export const createSubCategoriesRequestSchema = {
   tags: ['master'],
-  body: SubcategoryType,
+  body: Type.Array(SubcategoryType) ,
   response: {
     ...ErrorResponses,
     200: SuccessResponseType(),
@@ -37,7 +37,7 @@ export const getCategoriesRequestSchema = {
 
 export const getSubCategoriesRequestSchema = {
   tags: ['master'],
-  params: Type.Object({
+  pathParams: Type.Object({
     categoriesId: Type.String(), // Adding categoriesId as a path parameter
   }),
   response: {

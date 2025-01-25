@@ -15,7 +15,6 @@ exports.signToken = signToken;
 const verifyToken = (token) => {
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.SECRET_KEY);
-        console.log('DECODED__', decoded);
         return decoded;
     }
     catch (error) {
@@ -28,10 +27,8 @@ const getUserIdFromRequestHeader = (req) => {
     if (!authHeader) {
         throw new Error('Authorization header missing');
     }
-    const token = authHeader.split(' ')[0]; // Get the token part
-    console.log('TOKNE__', token);
+    const token = authHeader?.split(' ')[1] ?? authHeader?.split(' ')[0];
     const decodedToken = (0, exports.verifyToken)(token);
-    console.log('DECODED_TOKNE__', decodedToken);
     return decodedToken;
 };
 exports.getUserIdFromRequestHeader = getUserIdFromRequestHeader;

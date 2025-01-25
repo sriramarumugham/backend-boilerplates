@@ -6,7 +6,7 @@ const response_type_1 = require("../../types/response.type");
 const typebox_1 = require("@sinclair/typebox");
 exports.createCategories = {
     tags: ['master'],
-    body: types_1.CategoryType,
+    body: typebox_1.Type.Array(types_1.CategoryType),
     response: {
         ...response_type_1.ErrorResponses,
         200: (0, response_type_1.SuccessResponseType)(),
@@ -14,7 +14,7 @@ exports.createCategories = {
 };
 exports.createSubCategoriesRequestSchema = {
     tags: ['master'],
-    body: types_1.SubcategoryType,
+    body: typebox_1.Type.Array(types_1.SubcategoryType),
     response: {
         ...response_type_1.ErrorResponses,
         200: (0, response_type_1.SuccessResponseType)(),
@@ -29,7 +29,7 @@ exports.getCategoriesRequestSchema = {
 };
 exports.getSubCategoriesRequestSchema = {
     tags: ['master'],
-    params: typebox_1.Type.Object({
+    pathParams: typebox_1.Type.Object({
         categoriesId: typebox_1.Type.String(), // Adding categoriesId as a path parameter
     }),
     response: {

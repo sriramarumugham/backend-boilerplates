@@ -10,7 +10,7 @@ const MasterRoutes = async (fastify) => {
         schema: master_request_usecase_1.createCategories,
     }, async (req, res) => {
         try {
-            await (0, master_usecase_1.createCategoryUseCase)(req.body);
+            await (0, master_usecase_1.createOrUpdateCategories)(req.body);
             (0, response_1.createSuccessResponse)(res, 'category created!');
         }
         catch (error) {
@@ -23,7 +23,7 @@ const MasterRoutes = async (fastify) => {
         schema: master_request_usecase_1.createSubCategoriesRequestSchema,
     }, async (req, res) => {
         try {
-            await (0, master_usecase_1.createSubcategoryUseCase)(req.body);
+            await (0, master_usecase_1.createOrUpdateSubcategories)(req.body);
             (0, response_1.createSuccessResponse)(res, 'subcategory created!');
         }
         catch (error) {
@@ -33,7 +33,7 @@ const MasterRoutes = async (fastify) => {
         }
     })
         .get('/categories', {
-        schema: master_request_usecase_1.getSubCategoriesRequestSchema,
+        schema: master_request_usecase_1.getCategoriesRequestSchema,
     }, async (req, res) => {
         try {
             const categories = await (0, master_usecase_1.getCatagoriesUseCase)();
@@ -49,7 +49,7 @@ const MasterRoutes = async (fastify) => {
         schema: master_request_usecase_1.getSubCategoriesRequestSchema,
     }, async (req, res) => {
         try {
-            const subCatagories = await (0, master_usecase_1.getAllSubcatagoriesByCatagoriesId)('fsdfs');
+            const subCatagories = await (0, master_usecase_1.getAllSubcatagoriesByCatagoriesId)(req?.params?.catagoriesId);
             (0, response_1.createSuccessResponse)(res, 'Sub catagories retrieved successfully', subCatagories);
         }
         catch (error) {

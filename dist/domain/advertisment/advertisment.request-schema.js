@@ -5,13 +5,14 @@ const types_1 = require("../../types");
 const response_type_1 = require("../../types/response.type");
 const typebox_1 = require("@sinclair/typebox");
 const advertisment_type_1 = require("../../types/advertisment.type");
+const helpers_1 = require("../../utils/helpers");
 exports.createAdvertismentRequestSchema = {
     tags: ['advertisment'],
-    body: types_1.CreateAdvertismentRequestDocument,
     response: {
         ...response_type_1.ErrorResponses,
         201: (0, response_type_1.SuccessResponseType)(),
     },
+    description: `This API requires form data. Upload the images and other fields in form data. \n\nSchema:\n${(0, helpers_1.generateSchemaDescription)(types_1.AdvertismentType)}`,
 };
 exports.updateAdvertismentInverntorySchema = {
     tags: ['advertisment'],

@@ -22,13 +22,11 @@ const SearchRoute = async (fastify) => {
             (0, response_1.createErrorResponse)(res, message, statusCode);
         }
     })
-        .get('/:id', // Parameterized route for fetching by ID
-    {
+        .get('/:id', {
         schema: advertisment_request_schema_1.getAdvertismentByIdRequestSchema,
     }, async (req, res) => {
         try {
-            const { id } = req.params; // Extract ID from request parameters
-            // Fetch the advertisement by ID and ensure it is active
+            const { id } = req.params;
             const advertisment = await (0, advertisment_usecase_1.getAdvertismentByIdUsecase)(id);
             if (!advertisment) {
                 return (0, response_1.createErrorResponse)(res, 'Advertisement not found or inactive', 404);

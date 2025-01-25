@@ -7,14 +7,15 @@ import {
   searchRequestDocument,
   UpdateInventoryDocument,
 } from '../../types/advertisment.type';
+import { generateSchemaDescription } from '@/utils/helpers';
 
 export const createAdvertismentRequestSchema = {
   tags: ['advertisment'],
-  body: CreateAdvertismentRequestDocument,
   response: {
     ...ErrorResponses,
     201: SuccessResponseType(),
   },
+  description: `This API requires form data. Upload the images and other fields in form data. \n\nSchema:\n${generateSchemaDescription(AdvertismentType)}`,
 } satisfies FastifySchema;
 
 export const updateAdvertismentInverntorySchema = {
@@ -68,7 +69,6 @@ export const deleteAdvertismentSchema = {
 } satisfies FastifySchema;
 
 // search
-
 export const searchRequestSchema = {
   tags: ['search'], // Updated tag
   querystring: searchRequestDocument, // Ensure this is a TypeBox schema

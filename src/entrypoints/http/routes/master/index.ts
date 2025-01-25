@@ -2,10 +2,13 @@ import { loginUseCase } from '@/domain/auth/auth.usecase';
 import {
   createCategories,
   createSubCategoriesRequestSchema,
+  getCategoriesRequestSchema,
   getSubCategoriesRequestSchema,
 } from '@/domain/master/master.request.usecase';
 import {
   createCategoryUseCase,
+  createOrUpdateCategories,
+  createOrUpdateSubcategories,
   createSubcategoryUseCase,
   getAllSubcatagoriesByCatagoriesId,
   getCatagoriesUseCase,
@@ -29,12 +32,12 @@ const MasterRoutes: FastifyPluginAsync = async (fastify) => {
       },
       async (
         req: FastifyRequest<{
-          Body: CategoryDocument;
+          Body: CategoryDocument[];
         }>,
         res,
       ) => {
         try {
-          await createCategoryUseCase(req.body);
+          await createOrUpdateCategories(req.body);
           createSuccessResponse(res, 'category created!');
         } catch (error: any) {
           const message = error.message || 'An unexpected error occurred';
@@ -50,12 +53,12 @@ const MasterRoutes: FastifyPluginAsync = async (fastify) => {
       },
       async (
         req: FastifyRequest<{
-          Body: SubcategoryDocument;
+          Body: SubcategoryDocument[];
         }>,
         res,
       ) => {
         try {
-          await createSubcategoryUseCase(req.body);
+          await createOrUpdateSubcategories(req.body);
           createSuccessResponse(res, 'subcategory created!');
         } catch (error: any) {
           const message = error.message || 'An unexpected error occurred';
@@ -67,7 +70,7 @@ const MasterRoutes: FastifyPluginAsync = async (fastify) => {
     .get(
       '/categories',
       {
-        schema: getSubCategoriesRequestSchema,
+        schema: getCategoriesRequestSchema,
       },
       async (req, res: FastifyReply) => {
         try {
@@ -89,10 +92,13 @@ const MasterRoutes: FastifyPluginAsync = async (fastify) => {
       {
         schema: getSubCategoriesRequestSchema,
       },
-      async (req, res: FastifyReply) => {
+      async (req: FastifyRequest<{
+        Params: { catagoriesId: string };
+      }>, res: FastifyReply) => {
         try {
+
           const subCatagories =
-            await getAllSubcatagoriesByCatagoriesId('fsdfs');
+            await getAllSubcatagoriesByCatagoriesId(req?.params?.catagoriesId as string);
           createSuccessResponse(
             res,
             'Sub catagories retrieved successfully',

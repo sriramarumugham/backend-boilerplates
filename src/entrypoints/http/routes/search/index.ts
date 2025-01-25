@@ -6,7 +6,6 @@ import {
   getAdvertismentByIdUsecase,
   searchProductsUseCase,
 } from '@/domain/advertisment/advertisment.usecase';
-import { searchRequestType } from '@/types';
 import { createErrorResponse, createSuccessResponse } from '@/utils/response';
 import { Static, TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync, FastifyReply, FastifyRequest } from 'fastify'; // Import the search use case
@@ -20,7 +19,7 @@ const SearchRoute: FastifyPluginAsync = async (fastify) => {
       { schema: searchRequestSchema },
       async (
         req: FastifyRequest<{
-          Querystring: Static<typeof searchRequestDocument>; // Ensure correct type
+          Querystring: Static<typeof searchRequestDocument>; 
         }>,
         res: FastifyReply,
       ) => {
@@ -46,20 +45,19 @@ const SearchRoute: FastifyPluginAsync = async (fastify) => {
       },
     )
     .get(
-      '/:id', // Parameterized route for fetching by ID
+      '/:id', 
       {
         schema: getAdvertismentByIdRequestSchema,
       },
       async (
         req: FastifyRequest<{
-          Params: { id: string }; // Define the type for the params
+          Params: { id: string }; 
         }>,
         res: FastifyReply,
       ) => {
         try {
-          const { id } = req.params; // Extract ID from request parameters
+          const { id } = req.params; 
 
-          // Fetch the advertisement by ID and ensure it is active
           const advertisment = await getAdvertismentByIdUsecase(id);
 
           if (!advertisment) {
