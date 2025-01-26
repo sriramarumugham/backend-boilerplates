@@ -56,7 +56,7 @@ export const updateUserProfileUseCase = async (
   updateData: UpdateUserProfileType,
 ) => {
   try {
-    const updatedUser = await UserModel.findByIdAndUpdate(userId, updateData, {
+    const updatedUser = await UserModel.updateOne({ userId: userId }, {$set:updateData}, {
       new: true,
       omitUndefined: true,
     });
@@ -70,3 +70,7 @@ export const updateUserProfileUseCase = async (
     throw error;
   }
 };
+
+export const getUerById = async (userId: string) => { 
+  return await UserModel.findOne({userId:userId}).lean();
+}

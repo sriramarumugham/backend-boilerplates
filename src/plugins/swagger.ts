@@ -36,11 +36,6 @@ export default fp(async (fastify) => {
 
     fastify.register(swaggerUi, {
       routePrefix: '/docs',
-      uiConfig: {
-        docExpansion: 'full',
-      },
-      staticCSP: true,
-      transformStaticCSP: (header) => header,
     });
 
     console.log('Swagger and Swagger UI are enabled in development mode.');
@@ -48,3 +43,5 @@ export default fp(async (fastify) => {
     console.log('Swagger and Swagger UI are disabled in production mode.');
   }
 });
+
+

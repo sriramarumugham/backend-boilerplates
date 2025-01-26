@@ -1,6 +1,7 @@
 import {
   createReferredUserDocument,
   CreateUserDocument,
+  FilteredUserDocument,
   UpdateUserProfileDocument,
 } from '@/types';
 import { loginResponseDocument } from '@/types/auth.type';
@@ -18,9 +19,19 @@ export const createUserRequestSchema = {
 
 export const updateUserProfile = {
   tags: ['user'],
+  security: [{ bearerAuth: [] }],
   body: UpdateUserProfileDocument,
   response: {
     ...ErrorResponses,
-    201: SuccessResponseType(loginResponseDocument),
+    201: SuccessResponseType(),
+  },
+} satisfies FastifySchema;
+
+export const getUserProfile = {
+  tags: ['user'],
+  security: [{ bearerAuth: [] }],
+  response: {
+    ...ErrorResponses,
+    200: SuccessResponseType(FilteredUserDocument),
   },
 } satisfies FastifySchema;

@@ -1,5 +1,5 @@
-import { updateUserProfile } from '@/domain/user/user.request.schema';
-import { updateUserProfileUseCase } from '@/domain/user/user.usecase';
+import { getUserProfile, updateUserProfile } from '@/domain/user/user.request.schema';
+import { getUerById, updateUserProfileUseCase } from '@/domain/user/user.usecase';
 import { UpdateUserProfileType } from '@/types';
 import { getUserIdFromRequestHeader } from '@/utils/auth.util';
 import { createErrorResponse, createSuccessResponse } from '@/utils/response';
@@ -10,11 +10,9 @@ const UserRoutes: FastifyPluginAsync = async (fastify) => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>() // Ensure this is correctly applied
     .patch(
-      '/profile',
+      '',
       {
-        schema: {
-          body: updateUserProfile, // Ensure this matches your schema
-        },
+        schema: updateUserProfile
       },
       async (
         req: FastifyRequest<{
@@ -34,7 +32,31 @@ const UserRoutes: FastifyPluginAsync = async (fastify) => {
           createSuccessResponse(
             res,
             'User profile updated successfully!',
-            updatedUser,
+          );
+        } catch (error: any) {
+          const message = error.message || 'An unexpected error occurred';
+          const statusCode = error.status || 500;
+          createErrorResponse(res, message, statusCode);
+        }
+      },
+    ).get(
+      '',
+      {
+        schema: getUserProfile
+      },
+      async (
+        req: FastifyRequest,
+        res: FastifyReply,
+      ) => {
+        try {
+          const user = getUserIdFromRequestHeader(req);
+
+          const userDetails = await getUerById(user.userId,);
+
+          createSuccessResponse(
+            res,
+            'User profile fetched successfully!',
+            userDetails,
           );
         } catch (error: any) {
           const message = error.message || 'An unexpected error occurred';
@@ -44,3 +66,4 @@ const UserRoutes: FastifyPluginAsync = async (fastify) => {
       },
     );
 };
+export default UserRoutes;

@@ -24,12 +24,18 @@ export const CreateUserDocument = Type.Intersect([
 
 export type CreateUserType = Static<typeof CreateUserDocument>;
 
-export const UpdateUserProfileDocument = Type.Omit(UserType, [
+export const UpdateUserProfileDocument = Type.Partial( Type.Omit(UserType, [
   'userId',
   'email',
   'password',
-]);
+]));
 
 export type UpdateUserProfileType = Static<typeof UpdateUserProfileDocument>;
 
 export const isValidProfile = TypeCompiler.Compile(UpdateUserProfileDocument);
+
+export const FilteredUserDocument = Type.Partial(
+  Type.Omit(UserType, ['password'])
+);
+
+export type FilteredUserDocument = Static<typeof FilteredUserDocument>;
