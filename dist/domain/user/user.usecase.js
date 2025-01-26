@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserProfileUseCase = exports.loginUserUseCase = exports.creatUserUseCase = void 0;
+exports.getUerById = exports.updateUserProfileUseCase = exports.loginUserUseCase = exports.creatUserUseCase = void 0;
 const admin_schema_1 = __importDefault(require("../../data-access/models/admin.schema"));
 const referreduser_schema_1 = __importDefault(require("../../data-access/models/referreduser.schema"));
 const user_schema_1 = __importDefault(require("../../data-access/models/user.schema"));
@@ -53,7 +53,7 @@ const loginUserUseCase = async (body) => {
 exports.loginUserUseCase = loginUserUseCase;
 const updateUserProfileUseCase = async (userId, updateData) => {
     try {
-        const updatedUser = await user_schema_1.default.findByIdAndUpdate(userId, updateData, {
+        const updatedUser = await user_schema_1.default.updateOne({ userId: userId }, { $set: updateData }, {
             new: true,
             omitUndefined: true,
         });
@@ -67,3 +67,7 @@ const updateUserProfileUseCase = async (userId, updateData) => {
     }
 };
 exports.updateUserProfileUseCase = updateUserProfileUseCase;
+const getUerById = async (userId) => {
+    return await user_schema_1.default.findOne({ userId: userId }).lean();
+};
+exports.getUerById = getUerById;

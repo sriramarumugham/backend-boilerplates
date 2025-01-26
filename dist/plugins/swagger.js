@@ -70,11 +70,6 @@ exports.default = (0, fastify_plugin_1.default)(async (fastify) => {
         });
         fastify.register(swagger_ui_1.default, {
             routePrefix: '/docs',
-            uiConfig: {
-                docExpansion: 'full',
-            },
-            staticCSP: true,
-            transformStaticCSP: (header) => header,
         });
         console.log('Swagger and Swagger UI are enabled in development mode.');
     }
